@@ -36,7 +36,7 @@ export fn connect(
 	const sockaddr = ip::to_native(dest, port);
 	const sz = ip::native_addrlen(dest);
 	match (rt::connect(sockfd, &sockaddr, sz)) {
-	case void =>
+	case int =>
 		return io::fdopen(sockfd);
 	case let err: rt::errno =>
 		return errors::errno(err);
@@ -84,7 +84,7 @@ export fn listen(
 	const sockaddr = ip::to_native(addr, port);
 	const sz = ip::native_addrlen(addr);
 	match (rt::bind(sockfd, &sockaddr, sz)) {
-	case void => void;
+	case int => void;
 	case let err: rt::errno =>
 		return errors::errno(err);
 	};
