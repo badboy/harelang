@@ -637,7 +637,7 @@ export fn getsockopt(sockfd: int, level: int, optname: int, optval: nullable *op
 		optval: uintptr: u64, optlen: uintptr: u64))?: int;
 };
 
-export fn setsockopt(sockfd: int, level: int, optname: int, optval: *opaque, optlen: u32) (void | errno) = {
+export fn setsockopt(sockfd: int, level: int, optname: int, optval: *opaque, optlen: u32) (int | errno) = {
 	return wrap_return(syscall5(SYS_setsockopt,
 		sockfd: u64, level: u64, optname: u64,
 		optval: uintptr: u64, optlen: u64))?: int;
