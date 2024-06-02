@@ -23,5 +23,19 @@ export fn pipe(flags: pipe_flag = 0) ((io::file, io::file) | errors::error) = {
 	case let e: rt::errno =>
 		return errors::errno(e);
 	};
+
+	// special-casing darwin here. no `pipe2` support,
+	// so we need to set the flags after the fact.
+	match (rt::fcntl(fds[0], rt::F_SETFD, flags)) {
+	case int => void;
+	case let e: rt::errno =>
+		return errors::errno(e);
+	};
+	match (rt::fcntl(fds[1], rt::F_SETFD, flags)) {
+	case int => void;
+	case let e: rt::errno =>
+		return errors::errno(e);
+	};
+
 	return (fds[0], fds[1]);
 };
